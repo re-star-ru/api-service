@@ -1,24 +1,29 @@
-FROM node:current-alpine as backend
+FROM golang:1.16-alpine as backend
 
 ARG GIT_BRANCH
 
+ENV CGO_ENABLED=0
+
 ADD . /build
 WORKDIR /build
-#RUN apk add --no-cache --update git tzdata ca-certificates
-# TODO: -D for draft build
 
-RUN npm i
-RUN npm run build
+RUN apk add --no-cache --update git tzdata ca-certificates
 
-#RUN \
-#    version=${GIT_BRANCH}-$(date +%Y%m%dT%H:%M:%S) && \
-#    echo "version=$version" && \
-#    cd cmd/app && \
-#    go build -o /build/rp -ldfl ags "-X main.revision=${version} -s -w"
+RUN \
+    version=${GIT_BRANCH}-$(date +%Y%m%dT%H:%M:%S) && \
+    echo "version=$version" && \
+    go build -o /build/api-service -ldflags "-X main.revision=${version} -s -w"
 
-FROM umputun/reproxy:latest
+FROM ghcr.io/umputun/baseimage/app:v1.6.1 as base
+
+FROM scratch
 #todo: enable reproxy SPA mod
-COPY --from=backend /build/dist/spa /public
-ENV ASSETS_LOCATION=/public
-ENV ASSETS_SPA=true
-WORKDIR /public
+
+COPY --from=backend /build/api-service /srv/api-service
+COPY --from=base /usr/share/zoneinfo /usr/share/zoneinfo
+COPY --from=base /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=base /etc/passwd /etc/passwd
+COPY --from=base /etc/group /etc/group
+
+WORKDIR /srv
+ENTRYPOINT ["/srv/api-service"]

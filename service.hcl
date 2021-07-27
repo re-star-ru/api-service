@@ -12,9 +12,9 @@ job "api-service" {
 			driver = "docker"
 
 			volume_mount {
-				volume = "certs"
-				destination = "/etc/letsencrypt"
-				read_only   = true
+//				volume = "certs"
+//				destination = "/etc/letsencrypt"
+//				read_only   = true
 			}
 
 			config {
