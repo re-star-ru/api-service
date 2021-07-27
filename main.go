@@ -15,6 +15,12 @@ func main() {
 	vip.SetDefault("CONSUL_ADDR", "http://127.0.0.1:8500")
 	vip.AutomaticEnv()
 
+	if err := vip.AddRemoteProvider(
+		"consul", vip.GetString("CONSUL_ADDR"), "/configs/api-service/",
+	); err != nil {
+		log.Fatalln(err)
+	}
+
 	r := chi.NewRouter()
 
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
