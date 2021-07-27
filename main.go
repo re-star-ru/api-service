@@ -12,7 +12,6 @@ func main() {
 	vip := viper.New()
 	vip.SetDefault("HOST", "0.0.0.0")
 	vip.SetDefault("PORT", "8080")
-	vip.SetDefault("ADDR", "0.0.0.0:8080")
 	vip.SetDefault("CONSUL_ADDR", "http://127.0.0.1:8500")
 	vip.AutomaticEnv()
 

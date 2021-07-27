@@ -31,7 +31,7 @@ job "api-service" {
 			}
 
 			env {
-				PORT = "NOMAD_ADDR_api_service" // or api_service
+				ADDR = "NOMAD_ADDR_api_service" // or api_service
 			}
 
 
