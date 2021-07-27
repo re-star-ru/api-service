@@ -16,7 +16,7 @@ job "api-service" {
 				tags = [
 					"reproxy.enabled=1",
 					"reproxy.server=api.re-star.ru",
-					"reproxy.route=/v1/stand/"
+					"reproxy.route=/v1/api-service/"
 				]
 			}
 
