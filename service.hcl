@@ -34,6 +34,7 @@ job "api-service" {
 				PORT = "NOMAD_ADDR_api_service" // or api_service
 			}
 
+
 //			service {
 //				name = "global-redis-check"
 //				tags = ["global", "cache"]
