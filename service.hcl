@@ -1,4 +1,4 @@
-job "api_service" {
+job "api-service" {
 	datacenters = ["restar"] // change for data center
 	type = "service"
 
@@ -7,7 +7,7 @@ job "api_service" {
 			port "api_service" { host_network = "private" }
 		}
 
-		task "api_service" {
+		task "api-service" {
 			driver = "docker"
 
 			// client - reproxy
