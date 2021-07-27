@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/go-chi/chi/v5"
 	"github.com/spf13/viper"
+	_ "github.com/spf13/viper/remote"
 	"log"
 	"net/http"
 )
@@ -16,10 +17,17 @@ func main() {
 	vip.AutomaticEnv()
 
 	if err := vip.AddRemoteProvider(
-		"consul", vip.GetString("CONSUL_ADDR"), "/configs/api-service/",
+		"consul", vip.GetString("CONSUL_ADDR"), "/configs/api-service/api",
 	); err != nil {
 		log.Fatalln(err)
 	}
+	vip.SetConfigType("json")
+
+	if err := vip.ReadRemoteConfig(); err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println("values:", vip.Get("lel"))
 
 	r := chi.NewRouter()
 
