@@ -4,31 +4,34 @@ job "api-service" {
 
 	group "default" {
 		network {
-//			port "http" { static = 80 }
-//			port "https" { static = 443 }
+			port "api-service" { host_network = "private" }
 		}
 
 		task "api-service" {
 			driver = "docker"
 
-			volume_mount {
-//				volume = "certs"
-//				destination = "/etc/letsencrypt"
-//				read_only   = true
+			// client - reproxy
+			service {
+				port = "api-service"
+				tags = [
+					"reproxy.enabled=1",
+					"reproxy.server=api.re-star.ru",
+					"reproxy.route=/v1/stand/"
+				]
+			}
+
+			resources {
+				cpu = 100
+				memory = 64
 			}
 
 			config {
-				image = "ghcr.io/umputun/reproxy"
+				image = "ghcr.io/[[.repo]]:[[.tag]]"
 				network_mode = "host"
 			}
 
 			env {
-				PORT = "8080"
-			}
-
-			resources {
-				cpu = 200
-				memory = 128
+				PORT = "NOMAD_ADDR_api-service" // or api_service
 			}
 
 //			service {
