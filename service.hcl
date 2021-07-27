@@ -28,11 +28,6 @@ job "api-service" {
 			config {
 				image = "ghcr.io/[[.repo]]:[[.tag]]"
 				network_mode = "host"
-
-				auth {
-					username = "[[.username]]"
-					password = "[[.password]]"
-				}
 			}
 
 			env {

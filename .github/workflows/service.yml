@@ -40,6 +40,4 @@ jobs:
           args: levant deploy
             -var "tag=${{github.sha}}"
             -var "repo=${{github.repository}}"
-            -var "username=${{github.actor}}"
-            -var "password=${{github.GITHUB_TOKEN}}"
             service.hcl
