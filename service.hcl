@@ -1,18 +1,18 @@
-job "api-service" {
+job "api_service" {
 	datacenters = ["restar"] // change for data center
 	type = "service"
 
 	group "default" {
 		network {
-			port "api-service" { host_network = "private" }
+			port "api_service" { host_network = "private" }
 		}
 
-		task "api-service" {
+		task "api_service" {
 			driver = "docker"
 
 			// client - reproxy
 			service {
-				port = "api-service"
+				port = "api_service"
 				tags = [
 					"reproxy.enabled=1",
 					"reproxy.server=api.re-star.ru",
@@ -31,7 +31,7 @@ job "api-service" {
 			}
 
 			env {
-				PORT = "NOMAD_ADDR_api-service" // or api_service
+				PORT = "NOMAD_ADDR_api_service" // or api_service
 			}
 
 //			service {
