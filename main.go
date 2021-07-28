@@ -7,27 +7,13 @@ import (
 	_ "github.com/spf13/viper/remote"
 	"log"
 	"net/http"
+	"srvapi/config"
 )
 
 func main() {
-	vip := viper.New()
-	vip.SetDefault("HOST", "0.0.0.0")
-	vip.SetDefault("PORT", "8080")
-	vip.SetDefault("CONSUL_ADDR", "http://127.0.0.1:8500")
-	vip.AutomaticEnv()
+	cfg := config.GetConfig()
 
-	if err := vip.AddRemoteProvider(
-		"consul", vip.GetString("CONSUL_ADDR"), "/configs/api-service/api",
-	); err != nil {
-		log.Fatalln(err)
-	}
-	vip.SetConfigType("json")
-
-	if err := vip.ReadRemoteConfig(); err != nil {
-		log.Fatalln(err)
-	}
-
-	log.Println("values:", vip.Get("lel"))
+	log.Println("struct:", cfg)
 
 	r := chi.NewRouter()
 
