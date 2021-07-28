@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/go-chi/chi/v5"
 	"github.com/spf13/viper"
-	_ "github.com/spf13/viper/remote"
 	"log"
 	"net/http"
 	"srvapi/config"
@@ -24,10 +23,11 @@ func main() {
 	})
 
 	var addr string
-	if vip.GetString("ADDR") != "" {
-		addr = vip.GetString("ADDR")
+
+	if viper.GetString("ADDR") != "" {
+		addr = viper.GetString("ADDR")
 	} else {
-		addr = fmt.Sprintf("%s:%s", vip.GetString("HOST"), vip.GetString("PORT"))
+		addr = fmt.Sprintf("%s:%s", viper.GetString("HOST"), viper.GetString("PORT"))
 	}
 
 	log.Println("Server listen at:", addr)

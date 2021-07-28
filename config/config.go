@@ -2,6 +2,8 @@ package config
 
 import (
 	"github.com/spf13/viper"
+	_ "github.com/spf13/viper/remote"
+
 	"log"
 )
 
@@ -12,25 +14,26 @@ type Config struct {
 	Kek    []string
 }
 
-func GetConfig() *Config {
-	vip := viper.New()
-	vip.SetDefault("HOST", "0.0.0.0")
-	vip.SetDefault("PORT", "8080")
-	vip.SetDefault("CONSUL_ADDR", "http://127.0.0.1:8500")
-	vip.AutomaticEnv()
+// TODO: update remote config
 
-	if err := vip.AddRemoteProvider(
-		"consul", vip.GetString("CONSUL_ADDR"), "/configs/api-service/api",
+func GetConfig() *Config {
+	viper.SetDefault("HOST", "0.0.0.0")
+	viper.SetDefault("PORT", "8080")
+	viper.SetDefault("CONSUL_ADDR", "http://127.0.0.1:8500")
+	viper.AutomaticEnv()
+
+	if err := viper.AddRemoteProvider(
+		"consul", viper.GetString("CONSUL_ADDR"), "/configs/api-service/api",
 	); err != nil {
 		log.Fatalln(err)
 	}
-	vip.SetConfigType("hcl")
+	viper.SetConfigType("hcl")
 
-	if err := vip.ReadRemoteConfig(); err != nil {
+	if err := viper.ReadRemoteConfig(); err != nil {
 		log.Fatalln(err)
 	}
 
-	if err := vip.Unmarshal(&cfg); err != nil {
+	if err := viper.Unmarshal(&cfg); err != nil {
 		log.Fatalln(err)
 	}
 
